@@ -10,6 +10,8 @@ import Button from "react-bootstrap/Button";
 import { Link, useNavigate } from "react-router-dom";
 
 const ContactList = () => {
+  const BASE_URL = "https://contact-app-dzad.onrender.com"
+
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
   //   const [loading, setLoading] = useState(true);
@@ -21,7 +23,8 @@ const ContactList = () => {
 
   const getData = async () => {
     try {
-      const result = await axios.get("http://localhost:5999/api/contacts");
+      // const result = await axios.get("http://localhost:5999/api/contacts");
+      const result = await axios.get(`${BASE_URL}/api/contacts`);
       console.log(result);
       setContacts(result.data.data.reverse());
       //   setLoading(false);
@@ -31,7 +34,8 @@ const ContactList = () => {
   };
 
   const deleteContact = async (_id) => {
-    await axios.delete(`http://localhost:5999/api/contacts/${_id}`);
+    // await axios.delete(`http://localhost:5999/api/contacts/${_id}`);
+    await axios.delete(`${BASE_URL}/api/contacts/${_id}`);
     alert("Your contact has been deleted");
     getData();
   };
