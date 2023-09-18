@@ -10,42 +10,34 @@ const EditContact = () => {
   const [contact, setContact] = useState({
     name: "",
     email: "",
+    phoneNo: "",
   });
 
-  const { name, email } = contact;
-
-  const [phone, setPhone] = useState("");
+  const { name, email, phoneNo } = contact;
 
   const onInputChange = (e) => {
-    console.log(...contact);
     setContact({ ...contact, [e.target.name]: e.target.value });
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     await axios.put(`http://localhost:5999/api/contacts/${id}`, contact);
-    alert("Your data had been submitted");
-    navigate("/", { replace: true });
+    alert("Your data had been updated");
+    navigate("/");
   };
 
-  const loadContact = async () => {
-    const result = await axios.get(`http://localhost:5999/api/contacts/${id}`);
-    setContact(result.data);
+  const loadContact = () => {
+    axios.get(`http://localhost:5999/api/contacts/`+ id)
+    .then(res => {
+      console.log(res);
+      setContact({...contact, name: res.data.data.name, email: res.data.data.email, phoneNo: res.data.data.phoneNo})
+    })
+    .catch(err => console.log(err))
   };
 
   useEffect(() => {
     loadContact();
   }, []);
-
-  const handlePhoneChange = (e) => {
-    const inputValue = e.target.value;
-    const numericValue = inputValue.replace(/[^0-9]/g, "");
-
-    if (inputValue.length > 10) {
-      inputValue = inputValue.slice(0, 10);
-    }
-    setPhone(numericValue);
-  };
 
   return (
     <>
@@ -62,7 +54,8 @@ const EditContact = () => {
               type="text"
               placeholder="Update your name"
               name="name"
-              value={name}
+              // value={name}
+              value={contact.name}
               onChange={(e) => onInputChange(e)}
               autoComplete="off"
             />
@@ -74,7 +67,7 @@ const EditContact = () => {
               type="email"
               placeholder="Update your email"
               name="email"
-              value={email}
+              value={contact.email}
               onChange={(e) => onInputChange(e)}
               autoComplete="off"
             />
@@ -86,8 +79,8 @@ const EditContact = () => {
               type="text"
               placeholder="Update your phone no"
               name="phoneNo"
-              value={phone}
-              onChange={handlePhoneChange}
+              value={phoneNo}
+              onChange={(e) => onInputChange(e)}
               autoComplete="off"
             />
           </Form.Group>

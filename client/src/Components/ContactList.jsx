@@ -4,6 +4,7 @@ import axios from "axios";
 import ContactData from "./ContactData";
 
 import Table from "react-bootstrap/Table";
+import { CSVLink, CSVDownload } from "react-csv";
 import Button from "react-bootstrap/Button";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -47,35 +48,68 @@ const ContactList = () => {
     setContacts(newSearchUser);
   };
 
-//   const handleGoHome = () => {
-//     alert("Redirecting to home...");
-//     navigate("/");
-//   };
+  //   const handleGoHome = () => {
+  //     alert("Redirecting to home...");
+  //     navigate("/");
+  //   };
 
+  // Sorting ->
+  const [order, setOrder] = useState("ASC");
 
-const [order, setOrder] = useState("ASC");
-
-const sorting = (col) => {
-    if(order === "ASC"){
-        const sorted = [...contacts].sort((a,b) => a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1);
-        setContacts(sorted)
-        setOrder("DESC")
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...contacts].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setContacts(sorted);
+      setOrder("DESC");
     }
-    if(order === "DESC"){
-        const sorted = [...contacts].sort((a,b) => a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1);
-        setContacts(sorted)
-        setOrder("ASC")
+    if (order === "DESC") {
+      const sorted = [...contacts].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setContacts(sorted);
+      setOrder("ASC");
     }
-}
+  };
+
+  // Download in csv ->
+  const headers = [
+    {
+      label: "NAME",
+      key: "name",
+    },
+    {
+      label: "Email",
+      key: "email",
+    },
+    {
+      label: "Phone",
+      key: "phoneNo",
+    },
+  ];
+
+  const csvLink = {
+    filename: "file.csv",
+    headers: headers,
+    data: contacts,
+  };
 
   return (
     <>
-      <div style={{ display: "flex", direction: "column", backgroundColor: "grey"}}>
-        <h1 style={{ marginLeft: "180px" }}>
-          {" "}
-          Contact Details
-        </h1>
-        <form className="d-flex" onSubmit={handleSearchSubmit} style={{marginLeft: "150px"}}>
+      <div
+        style={{
+          display: "flex",
+          direction: "column",
+          backgroundColor: "grey",
+        }}
+      >
+        <h1 style={{ marginLeft: "180px" }}> Contact Details</h1>
+        <form
+          className="d-flex"
+          onSubmit={handleSearchSubmit}
+          style={{ marginLeft: "150px" }}
+        >
           <input
             type="text"
             name="searchInput"
@@ -84,19 +118,37 @@ const sorting = (col) => {
             placeholder="Search Contacts"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            style={{width: "400px", height: "40px", marginTop: "7px"}}
+            style={{ width: "400px", height: "40px", marginTop: "7px" }}
           />
           <input
             type="submit"
             value="Search"
             className="btn btn-info"
-            style= {{marginLeft: "10px", width: "80px", height: "40px", marginTop: "7px"}}
+            style={{
+              marginLeft: "10px",
+              width: "80px",
+              height: "40px",
+              marginTop: "7px",
+            }}
           />
         </form>
         <Link to={"/addContact"}>
-          <Button style={{ marginLeft: "170px", marginTop:"7px" }}>Add Contact</Button>
+          <Button style={{ marginLeft: "170px", marginTop: "7px" }}>
+            Add Contact
+          </Button>
         </Link>
-        <Button style={{ marginLeft: "40px", width:"100px", height:"40px", marginTop:"7px" }}>Download</Button>
+        <CSVLink {...csvLink}>
+          <Button
+            style={{
+              marginLeft: "40px",
+              width: "100px",
+              height: "40px",
+              marginTop: "7px",
+            }}
+          >
+            Download
+          </Button>
+        </CSVLink>
       </div>
       <p style={{ textAlign: "center", marginTop: "7px" }}>
         Our Total Contacts: <strong>{contacts.length}</strong>
@@ -105,9 +157,9 @@ const sorting = (col) => {
         <thead style={{ textAlign: "center" }}>
           <tr>
             <th>No.</th>
-            <th onClick = { () => sorting("name")}>Name</th>
-            <th onClick = { () => sorting("email")}>Email</th>
-            <th onClick = { () => sorting("phoneNo")}>PhoneNo</th>
+            <th onClick={() => sorting("name")}>Name</th>
+            <th onClick={() => sorting("email")}>Email</th>
+            <th onClick={() => sorting("phoneNo")}>PhoneNo</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -160,9 +212,6 @@ const sorting = (col) => {
 };
 
 export default ContactList;
-
-
-
 
 /*
 const getData = () => {
