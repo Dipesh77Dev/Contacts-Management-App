@@ -6,12 +6,13 @@ require('dotenv').config();
 const express = require('express');  
 const connectDB = require('./config/db.config');
 const contactRouter = require('./routes/contact.router');
+const cors = require('cors');
 
 // using app as an express & adding middleware  -->
 const app = express();
 
 app.use(express.json());
-
+app.use(cors());
 
 // testing apis -->
 app.get('/test', (req, res) => {

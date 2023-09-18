@@ -1,10 +1,14 @@
-const contactService = require('../services/contact.service');
+const ContactModal = require('../models/contact.model');
 
 module.exports = {
     getAllContacts: async (req, res) => {
         try {
-            const getContactsData = await contactService.getContacts();
-            return getContactsData;
+            const response = await ContactModal.find();
+            return res.status(200).json({
+                status: 200,
+                data: response,
+                message: 'Got All Contacts...'
+            })
         }
         catch (err) {
             console.log(err);
@@ -13,8 +17,17 @@ module.exports = {
 
     addingContact: async (req, res) => {
         try {
-            const addContactData = await contactService.addContact(req.body);
-            return addContactData;
+            const response = await ContactModal.create({
+                name: req.body.name,
+                email: req.body.email,
+                phoneNo: req.body.phoneNo
+            }
+            );
+            return res.status(200).json({
+                status: 200,
+                data: response,
+                message: "User Contact Added Successfully..."
+            })
         }
         catch (err) {
             console.log(err);
@@ -23,8 +36,12 @@ module.exports = {
 
     getContactById: async (req, res) => {
         try {
-            const getContactByIdData = await contactService.getContactById();
-            return getContactByIdData;
+            const response = await ContactModal.findByIdAndUpdate(req.params.id);
+            return res.status(200).json({
+                status: 200,
+                data: response,
+                message: "User Contact Updated Successfully..."
+            })
         }
         catch (err) {
             console.log(err);
@@ -33,8 +50,12 @@ module.exports = {
 
     updateContact: async (req, res) => {
         try {
-            const updateContactData = await contactService.updateContactById();
-            return updateContactData;
+            const response = await ContactModal.findByIdAndUpdate(req.params.id, req.body);
+            return res.status(200).json({
+                status: 200,
+                data: response,
+                message: "User Contact Updated Successfully..."
+            })
         }
         catch (err) {
             console.log(err);
@@ -43,8 +64,12 @@ module.exports = {
 
     deleteContactById: async (req, res) => {
         try {
-            const deleteContactData = await contactService.deleteContactById();
-            return deleteContactData
+            const response = await ContactModal.findByIdAndRemove(req.params.id);
+            return res.status(200).json({
+                status: 200,
+                data: response,
+                message: "User Contact had been Deleted By Id Successfully..."
+            })
         }
         catch (err) {
             console.log(err);
@@ -53,8 +78,12 @@ module.exports = {
 
     deleteAllContacts: async (req, res) => {
         try {
-            const deleteContactsData = await contactService.deleteAllContacts();
-            return deleteContactsData
+            const response = await ContactModal.deleteMany();
+            return res.status(200).json({
+                status: 200,
+                data: response,
+                message: "All User Contact had been Deleted Successfully..."
+            })
         }
         catch (err) {
             console.log(err);
@@ -64,3 +93,4 @@ module.exports = {
 
 
 // const getContactsData = await contactService.getContacts;
+//  return res.status.json({});
