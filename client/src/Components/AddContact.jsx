@@ -6,6 +6,8 @@ import { Form, Button, Container } from "react-bootstrap";
 const AddContact = () => {
   let navigate = useNavigate();
 
+  const BASE_URL = "https://contact-app-dzad.onrender.com"
+
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -21,7 +23,8 @@ const AddContact = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:5999/api/contacts", contact);
+    // await axios.post("http://localhost:5999/api/contacts", contact);
+    await axios.post(`${BASE_URL}/api/contacts`, contact);
     alert("Your data had been saved successfully & added in our contact list...")
     navigate("/", { replace: true });
   };

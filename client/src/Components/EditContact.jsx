@@ -15,19 +15,23 @@ const EditContact = () => {
 
   const { name, email, phoneNo } = contact;
 
+  const BASE_URL = "https://contact-app-dzad.onrender.com"
+
   const onInputChange = (e) => {
     setContact({ ...contact, [e.target.name]: e.target.value });
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`http://localhost:5999/api/contacts/${id}`, contact);
+    // await axios.put(`http://localhost:5999/api/contacts/${id}`, contact);
+    await axios.put(`${BASE_URL}/api/contacts/${id}`, contact);
     alert("Your data had been updated");
     navigate("/");
   };
 
   const loadContact = () => {
-    axios.get(`http://localhost:5999/api/contacts/`+ id)
+    // axios.get(`http://localhost:5999/api/contacts/`+ id)
+    axios.get(`${BASE_URL}/api/contacts/`+ id)
     .then(res => {
       console.log(res);
       setContact({...contact, name: res.data.data.name, email: res.data.data.email, phoneNo: res.data.data.phoneNo})

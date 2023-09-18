@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 
 const ViewContact = () => {
+  const BASE_URL = "https://contact-app-dzad.onrender.com"
+
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -16,7 +18,8 @@ const ViewContact = () => {
   }, []);
 
   const loadUser = async () => {
-    const res = await axios.get(`http://localhost:5999/api/contacts/${id}`);
+    // const res = await axios.get(`http://localhost:5999/api/contacts/${id}`);
+    const res = await axios.get(`${BASE_URL}/api/contacts/${id}`);
     setContact(res.data.data);
   };
 

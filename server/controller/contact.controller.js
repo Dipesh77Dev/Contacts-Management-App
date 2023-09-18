@@ -40,7 +40,7 @@ module.exports = {
             return res.status(200).json({
                 status: 200,
                 data: response,
-                message: "User Contact Updated Successfully..."
+                message: "User Contact Got By Id Successfully..."
             })
         }
         catch (err) {
