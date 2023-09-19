@@ -36,7 +36,7 @@ module.exports = {
 
     getContactById: async (req, res) => {
         try {
-            const response = await ContactModal.findByIdAndUpdate(req.params.id);
+            const response = await ContactModal.findById(req.params.id);
             return res.status(200).json({
                 status: 200,
                 data: response,
